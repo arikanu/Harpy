@@ -1,0 +1,53 @@
+.boxes nav ul{
+	list-style: none;
+	overflow: hidden;
+	position: relative;
+}
+.boxes nav ul li{
+	float: left;
+	margin: 0 20px 0 0;
+}
+.boxes nav ul li a {
+	display: block; width: 120px; height: 120px;
+	background-image: url(icons.png); background-repeat: no-repeat;
+}
+.boxes nav ul li:nth-child(1) a {
+	background-color: #5bb2fc;
+	background-position: 28px 28px;
+}
+.boxes nav ul li:nth-child(2) a {
+	background-color: #58ebd3;
+	background-position: 28px -96px;
+}
+.boxes nav ul li:nth-child(3) a {
+	background-color: #ffa659;
+	background-position: 28px -222px;
+}
+.boxes nav ul li:nth-child(4) a {
+	background-color: #ff7a85;
+	background-position: 28px -342px;
+}
+.boxes nav ul li a span {
+	font: 50px "Dosis", sans-serif; text-transform: uppercase; 
+	position: absolute; left: 580px; top: 29px;
+	display: none;
+}
+.boxes nav ul li a:hover span { display: block;}
+.boxes nav ul li:nth-child(1) a span {color: #5bb2fc;}
+.boxes nav ul li:nth-child(2) a span {color: #58ebd3;}
+.boxes nav ul li:nth-child(3) a span {color: #ffa659;}
+.boxes nav ul li:nth-child(4) a span {color: #ff7a85;}
+
+
+/* Example
+from: http://line25.com/tutorials/how-to-create-a-trendy-flat-style-nav-menu-in-css
+<div class="boxes">
+	<nav>
+		<ul>
+			<li><a href="/hag/admin/exam/queryexam"><span>Query Exam</span></a></li>
+			<li><a href="/hag/admin/exam/readexam"><span>Upload Exam</span></a></li>
+			<li><a href="www.google.com"><span>Google</span></a></li>
+		</ul>
+	</nav>
+</div>
+ */
