@@ -1,91 +1,44 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<html>
-	<head>
-		<script>		
-		function showTest(testName) {
-			var allDivs = document.getElementsByTagName("div");
-				for(var x = 0; x < allDivs.length; x++) {
-					className = allDivs[x].getAttribute("class");
-					if (className == "questionList") {
-						if (allDivs[x].id == testName) {
-							allDivs[x].style.display = 'block';
-						}
-						else {
-							allDivs[x].style.display = 'none';
-						}
-					}
-				}
-		}
-		function showQuestion(questionId) {
-			var allDivs = document.getElementsByTagName("div");
-			for(var x = 0; x < allDivs.length; x++) {
-				className = allDivs[x].getAttribute("class");
-				if (className == "question") {
-					if (allDivs[x].id == questionId) {
-						allDivs[x].style.display = 'block';
-					}
-					else {
-						allDivs[x].style.display = 'none';
-					}
-				}
-			}
-		}
-		</script>
-	</head>
+<spring:url value="/jquery/js/jquery-1.10.2.min.js" var="jQueryMin" />
+<script src="${jQueryMin}"></script>
 
-	<body>
-		<c:choose>
-			<c:when test="${m.exam != null}">
-				<div class="testList">						
-					<c:forEach var="test" items="${m.exam.tests}">
-						<a href="javascript:showTest('${test.name}');">${test.name}</a>
-					</c:forEach>
-				</div>
+<spring:url value="/jquery/js/exam/m.exam.js" var="examJs" />
+<script src="${examJs}"></script>	
+	
+<c:choose>
+	<c:when test="${m.exam != null}">
+		<div class="tNav">
+			<ul>
 				<c:forEach var="test" items="${m.exam.tests}">
-					<c:choose>
-						<c:when test="${test.name == m.exam.getTests().get(0).getName()}">
-							<div class="questionList" id="${test.name}" style="display: block;">
-								<c:forEach var="question" items="${test.questions}">
-									<a href="javascript:showQuestion('${test.name}_${question.number}');">${question.number}</a>
-								</c:forEach>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<div class="questionList" id="${test.name}" style="display: none;">
-								<c:forEach var="question" items="${test.questions}">
-									<a href="javascript:showQuestion('${test.name}_${question.number}');">${question.number}</a>
-								</c:forEach>
-							</div>
-						</c:otherwise>
-					</c:choose>
+					<li class="notselected" id="tNavLi_${test.number}">
+						${test.name}
+					</li>					
 				</c:forEach>
+			</ul>
+		</div>
+		
+		<div class="qNav">
+			<ul>
 				<c:forEach var="test" items="${m.exam.tests}">
 					<c:forEach var="question" items="${test.questions}">
-						<c:choose>
-							<c:when test="${test.name == m.exam.getTests().get(0).getName()}">
-								<c:choose>
-									<c:when test="${question.number == m.exam.getTests().get(0).getQuestions().get(0).getNumber()}">
-										<div class="question" id="${test.name}_${question.number}" style="display: block;">
-											<p>${question.questionHtml}</p>
-										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="question" id="${test.name}_${question.number}" style="display: none;">
-											<p>${question.questionHtml}</p>
-										</div>
-									</c:otherwise>
-								</c:choose>
-							</c:when>
-							<c:otherwise>
-								<div class="question" id="${test.name}_${question.number}" style="display: none;">
-									<p>${question.questionHtml}</p>
-								</div>
-							</c:otherwise>
-						</c:choose>
+						<li class="hidden" id="qNavLi_${test.number}_${question.number}">
+							${question.number}
+						</li>
 					</c:forEach>
 				</c:forEach>
-			</c:when>
-		</c:choose>
-	</body>
-</html>
+			</ul>
+		</div>
+
+		<div class="Questions">
+			<c:forEach var="test" items="${m.exam.tests}">					
+				<c:forEach var="question" items="${test.questions}">
+					<div class="questionNS" id="q_${test.number}_${question.number}">					
+						${question.questionHtml}
+					</div>
+				</c:forEach>
+			</c:forEach>			
+		</div>
+	</c:when>
+</c:choose>

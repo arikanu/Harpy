@@ -1,13 +1,11 @@
 package com.harpy.hag.db.entities.exam;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Session;
 
 import com.harpy.hag.db.utils.HibernateUtil;
@@ -33,16 +35,16 @@ public class Exam {
 	@TableGenerator(name="examId", table="pkExam", pkColumnName="examKey", pkColumnValue="examValue", allocationSize=1)
 	private int examId;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String key;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private int nbOfQuestions;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private int duration;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private Date date;
 	
 	@OneToMany(targetEntity=Test.class, mappedBy="exam", cascade=CascadeType.ALL/*, fetch=FetchType.EAGER*/)
@@ -57,30 +59,18 @@ public class Exam {
 
 	// non-db properties
 	@Transient
-	private HashMap<Integer, String> testsHM;// = generateTestsHM(this.tests);
+	private ArrayList<String> choiceCodes = new ArrayList<String>() {{ add("A"); add("B"); add("C"); add("D"); add("E"); }};
 	
-	public static HashMap<Integer, String> generateTestsHM(List<Test> tests) {
-		HashMap<Integer, String> hm = new  HashMap<Integer, String>();
-		for (int i = 0; i < tests.size(); i++) {
-			hm.put(i, tests.get(i).getName());
-		}
-		return hm;
-	}
-	
-	public static Exam newExamFromJson(com.harpy.hag.upload.exam.Exam jExam) {
-		if (jExam == null) {
-			System.out.println("jexam is NULL");
-			return null;			
-		} else {
-			System.out.println("jexam is NOT NULL");
-			Exam exam = new Exam();
-			exam.setKey(jExam.getKey());		
-			exam.setDuration(jExam.getDuration());
+	public Exam(){}
+	public Exam(com.harpy.hag.upload.exam.Exam jExam) {
+		if (jExam != null) {
+			this.key = jExam.getKey();
+			this.duration = jExam.getDuration();
 			try {
 				DateFormat formatter = new SimpleDateFormat("YYYY-MM-DD");
-				exam.setDate(formatter.parse(jExam.getDate()));
+				this.date = formatter.parse(jExam.getDate());
 			} catch (Exception e) {
-				exam.setDate(null);
+				this.date = null;
 			}
 			List<Test> tests = new ArrayList<Test>();
 			List<com.harpy.hag.upload.exam.Test> jTests = jExam.getTests();
@@ -106,35 +96,16 @@ public class Exam {
 					for (int c = 0; c < choicesHtml.size(); c++) {
 						Choice choice = new Choice();
 						choice.setChoiceHtml(choicesHtml.get(c));
-						choice.setChoiceId(c);
+						choice.setChoiceCode(this.choiceCodes.get(c));
 						choice.setChoiceLineIndex(choicesLineIndex.get(c));
+						choice.setCorrectAnswer(question.getCorrectAnswer() == choice.getChoiceCode());
 						choices.add(choice);
 					}
-					try { choices.get(0).setChoiceCode("A"); } catch (Exception e) { }
-					try { choices.get(1).setChoiceCode("B"); } catch (Exception e) { }
-					try { choices.get(2).setChoiceCode("C"); } catch (Exception e) { }
-					try { choices.get(3).setChoiceCode("D"); } catch (Exception e) { }
-					try { choices.get(4).setChoiceCode("E"); } catch (Exception e) { }
-					try { choices.get(0).setCorrectAnswer(question.getCorrectAnswer() == "A"); } catch (Exception e) { }
-					try { choices.get(1).setCorrectAnswer(question.getCorrectAnswer() == "B"); } catch (Exception e) { }
-					try { choices.get(2).setCorrectAnswer(question.getCorrectAnswer() == "C"); } catch (Exception e) { }
-					try { choices.get(3).setCorrectAnswer(question.getCorrectAnswer() == "D"); } catch (Exception e) { }
-					try { choices.get(4).setCorrectAnswer(question.getCorrectAnswer() == "E"); } catch (Exception e) { }
 					question.setChoices(choices);
 					questions.add(question);
 				}
 				test.setQuestions(questions);
 				tests.add(test);
-			}
-			String subTypeCode = jExam.getSubType();
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			String q = "from ExamSubType where code = '" + subTypeCode + "'";
-			ArrayList<ExamSubType> examSubTypes = new ArrayList<ExamSubType>(session.createQuery(q).list());
-			try {
-				exam.setExamSubType(examSubTypes.get(0));
-			} catch (Exception e) {
-				exam.setExamSubType(null);
 			}
 			List<ExamImage> examImages = new ArrayList<ExamImage>();
 			for (byte[] jImage : jExam.getImages()) {
@@ -142,12 +113,49 @@ public class Exam {
 				examImage.setImage(jImage);
 				examImages.add(examImage);
 			}
-			exam.setImages(examImages);
-			exam.setTests(tests);
-			exam.setNbOfQuestions(nbOfQuestions);
-			return exam;
-		}		
+			this.images = examImages;
+			this.tests = tests;
+			this.nbOfQuestions = nbOfQuestions;
+		}
 	}
+	
+	public static Exam examById(int examId) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		String q = "from Exam where examId = " + examId;
+		ArrayList<Exam> exams = new ArrayList<Exam>(session.createQuery(q).list());
+		if (exams.size() > 0) {
+			return exams.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	public static Exam examFromJson(String examJson) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(examJson, Exam.class);
+		} catch (JsonParseException e) {
+			return null;
+		} catch (JsonMappingException e) {
+			return null;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	public static String jsonFromExam(Exam exam) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(exam);
+		} catch (JsonGenerationException e) {
+			return null;
+		} catch (JsonMappingException e) {
+			return null;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
 	
 	
 	// Getters & Setters
@@ -177,11 +185,7 @@ public class Exam {
 	}
 	public Date getDate() {
 		return date;
-	}
-	public String getStrDate() {
-		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		return formatter.format(date);
-	}
+	}	
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -202,14 +206,6 @@ public class Exam {
 	}
 	public void setExamSubType(ExamSubType examSubType) {
 		this.examSubType = examSubType;
-	}
-
-	public HashMap<Integer, String> getTestsHM() {
-		return testsHM;
-	}
-
-	public void setTestsHM(HashMap<Integer, String> testsHM) {
-		this.testsHM = testsHM;
 	}
 	
 }

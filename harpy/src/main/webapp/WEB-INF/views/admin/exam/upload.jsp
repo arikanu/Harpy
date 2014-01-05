@@ -17,15 +17,17 @@
 	<body>
 		<p>${m.uploadedMessage}</p>
 		<form:form method="POST" commandName="m" action="uploaded" enctype="multipart/form-data">
+			<form:hidden path="examJson"/>
+			<form:hidden path="examSubTypeCode"/>
 			<p>Browse Exam-Json File: <form:input type="file" path="jsonFile" onchange="this.form.submit()" /></p>			
-			<jsp:include page="/WEB-INF/views/admin/exam/m.exam.meta.jsp"></jsp:include>
-			<jsp:include page="/WEB-INF/views/admin/exam/m.exam.jsp"></jsp:include>
 			<c:choose>
 				<c:when test="${m.exam != null}">
 					<p>An exam with the same key exists in DB: <strong>${m.existsInDb}</strong></p>
 					<input type="submit" value="Upload Exam" name="upload" />
 				</c:when>
 			</c:choose>
+			<jsp:include page="/WEB-INF/views/admin/exam/m.exam.meta.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/admin/exam/m.exam.jsp"></jsp:include>			
 		</form:form>
 	</body>
 	

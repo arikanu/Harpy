@@ -17,7 +17,7 @@
 				<tr>
 					<td>${m.exam.examId}</td>
 					<td>${m.exam.key}</td>
-					<td>${m.exam.getStrDate()}</td>
+					<td>${m.exam.getDate()}</td>
 					<td>${m.exam.getTests().size()}</td>
 					<td>${m.exam.duration}</td>
 					<td>${m.exam.nbOfQuestions}</td>

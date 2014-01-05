@@ -20,13 +20,13 @@ public class Question {
 	@TableGenerator(name="questionId", table="pkQuestion", pkColumnName="questionKey", pkColumnValue="questionValue", allocationSize=1)
 	private int questionId;
 	
-	@Column(nullable=false)
+	@Column(nullable=true, length=10000)	
 	private String questionHtml;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private int number;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String correctAnswer;
 	
 	@ManyToOne
@@ -34,7 +34,7 @@ public class Question {
 	private Test test;
 
 	@OneToMany(targetEntity=Choice.class, mappedBy="question", cascade=CascadeType.ALL/*, fetch=FetchType.EAGER*/)
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private List<Choice> choices;
 	
 	

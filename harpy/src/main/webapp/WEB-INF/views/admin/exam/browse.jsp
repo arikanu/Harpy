@@ -21,17 +21,17 @@
 			</c:forEach>
 			
 			<p>Sub Types</p>
-			size = ${m.examSubTypes.size() } <br />
 			<c:forEach var="subType" items="${m.examSubTypes}">
 				<form:radiobutton path="examSubTypeId" value="${subType.examSubTypeId}" onchange="this.form.submit()"/>				
 				${subType.code }: ${subType.name } <br />
 			</c:forEach>
-			
-			<p>Exams</p>
-			size = ${m.exams.size() } <br />
-			<jsp:include page="/WEB-INF/views/admin/exam/m.exams.jsp"></jsp:include>
-			
-			
+						
+			<c:choose>
+				<c:when test="${m.exams.size() > 0}">
+					<p>Exams</p>
+					<jsp:include page="/WEB-INF/views/admin/exam/m.exams.jsp"></jsp:include>
+				</c:when>
+			</c:choose>
 		</form:form>
 	</body>
 	<footer>

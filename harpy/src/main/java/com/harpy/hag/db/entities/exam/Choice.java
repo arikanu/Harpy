@@ -17,16 +17,16 @@ public class Choice {
 	@TableGenerator(name="choiceId", table="pkChoice", pkColumnName="choiceKey", pkColumnValue="choiceValue", allocationSize=1)
 	private int choiceId;
 	
-	@Column(nullable=false)
+	@Column(nullable=true, length=10000)
 	private String choiceHtml;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String choiceCode;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private int choiceLineIndex;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private boolean correctAnswer;
 	
 	@ManyToOne

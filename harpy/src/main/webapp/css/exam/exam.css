@@ -1,0 +1,26 @@
+.selected {
+	color: red;
+}
+.notselected {
+	color: black;
+}
+
+.displayedS {
+	
+	color: red;
+}
+.displayedNS {
+	
+	color: black;
+}
+.hidden {
+	
+	color: olive;
+}
+
+.questionNS {
+	color: olive;
+}
+.questionS{
+	color: black;
+}

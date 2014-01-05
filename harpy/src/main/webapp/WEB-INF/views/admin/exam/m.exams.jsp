@@ -15,10 +15,10 @@
 			</thead>
 			<tbody>
 				<c:forEach var="exam" items="${m.exams}">
-					<tr>
+					<tr onclick="location.href='view/${exam.examId}'">
 						<td>${exam.examId}</td>
 						<td>${exam.key}</td>
-						<td>${exam.getStrDate()}</td>				
+						<td>${exam.getDate()}</td>				
 						<td>${exam.getTests().size()}</td>
 						<td>${exam.duration}</td>
 						<td>${exam.nbOfQuestions}</td>
