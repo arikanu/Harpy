@@ -21,24 +21,25 @@ public class TryClass {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
-		String uur = "qNavLi_0_1";
+		String uur = "qThNext_4_6";
 		
-		//System.out.println(uur.length());
+		int lenLbl = "qThNext".length();
 		
-		String uru = uur.substring(0, 6);
+		System.out.println(lenLbl);
+		
+		int indx1 = uur.indexOf("_");
+		System.out.println("indx1:" + indx1);
+		
+		int indx2 = uur.indexOf("_", indx1+1);
+		System.out.println("indx2:" + indx2);
+		
+		String testId = uur.substring(indx1+1,indx2);
+		System.out.println("testId:" + testId);
+		
+		String qId = uur.substring(indx2+1);
+		System.out.println("qId:" + qId);
 		
 		
-		
-		int indx = uur.indexOf("_", 7);
-		System.out.println("indx=" + indx);
-		
-		uru = uur.substring(7, indx);
-		
-		uru = uur.substring(indx+1);
-		
-		//String uru = uur.substring(uur.length()-2, 1);
-		
-		System.out.println(uru);
 		
 		
 		

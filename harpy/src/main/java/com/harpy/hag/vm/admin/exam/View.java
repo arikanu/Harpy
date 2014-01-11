@@ -13,6 +13,9 @@ public class View {
 	
 	public Exam getExam() {
 		return exam;
-	}	
+	}
+	public void setExam(Exam exam) {
+		this.exam = exam;
+	}
 	
 }

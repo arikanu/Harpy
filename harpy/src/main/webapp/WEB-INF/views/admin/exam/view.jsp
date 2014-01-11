@@ -4,7 +4,16 @@
 	<head>
 		<title>View Exam</title>		
 		<spring:url value="/css/style.css" var="styleCss" />
-		<link rel="stylesheet" href="${styleCss}">					
+		<link rel="stylesheet" href="${styleCss}">		
+		
+		
+		<spring:url value="/jquery/js/jquery-1.10.2.min.js" var="jQuery" />
+		
+		<script type="text/javascript" src="${jQuery}"></script>
+		
+		
+		
+					
 	</head>
 	<header>
 		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
