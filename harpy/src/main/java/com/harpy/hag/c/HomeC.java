@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import com.harpy.hag.authentication.Login;
+
 import com.harpy.hag.authentication.LoginAuthentication;
 import com.harpy.hag.authentication.HagSuccessHandler;
 import com.harpy.hag.db.entities.user.User;
+import com.harpy.hag.vm.Login;
 
 @Controller
 public class HomeC {
@@ -28,7 +30,7 @@ public class HomeC {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
-		mav.addObject("login", new Login());
+		mav.addObject("m", new Login("Login"));
 		return mav;
 	}
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
@@ -37,7 +39,7 @@ public class HomeC {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
-		mav.addObject("login", new Login());
+		mav.addObject("m", new Login("Login"));
 		return mav;
 	}
 	
@@ -51,7 +53,7 @@ public class HomeC {
 		//psh.onAuthenticationSuccess(request, response, auth);
 	}
 	
-	
+	/*
 	@RequestMapping(value = "/student/home", method = RequestMethod.GET)
 	public ModelAndView studentHome() {
 		System.out.println("@CTRLR: studentHomeGET");
@@ -61,5 +63,5 @@ public class HomeC {
 		mav.addObject("user", LoginAuthentication.getUser(SecurityContextHolder.getContext().getAuthentication().getName()));
 		return mav;
 	}
-	
+	*/
 }

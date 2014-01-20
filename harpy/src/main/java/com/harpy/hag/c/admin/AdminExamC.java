@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.harpy.hag.db.entities.exam.Exam;
+import com.harpy.hag.vm.ViewModel;
 import com.harpy.hag.vm.admin.exam.Browse;
 import com.harpy.hag.vm.admin.exam.Read;
 import com.harpy.hag.vm.admin.exam.View;
@@ -34,6 +35,7 @@ public class AdminExamC {
 		System.out.println("@CTRLR: adminExamHomeGET");
 		
 		ModelAndView mav = new ModelAndView("admin/exam/home");
+		mav.addObject("m", new ViewModel("Admin/Exam/Home"));
 		return mav;
 	}
 	

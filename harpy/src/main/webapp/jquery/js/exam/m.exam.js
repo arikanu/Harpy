@@ -1,70 +1,88 @@
 $(document).ready(function(){
-	
-	alert('ugur');
-	
-	$("div.tNav ul li").first().attr('class', 'selected');
-	var tNb = $("div.tNav ul li.selected").attr('id');
-	tNb = tNb.substring(7);
-	$("div.qNav ul li").each(function(){
-		var qNavLi = $(this).attr('id');
-		var qTNb = qNavLi.substring(7, qNavLi.indexOf("_", 7));		
-		if (qTNb == tNb) {
-			var qNb = qNavLi.substring(qNavLi.indexOf("_", 7)+1);
-			if (qNb == "1") {
-				$(this).attr('class', 'displayedS');
-			} else {
-				$(this).attr('class', 'displayedNS');
-			}
-		} else {
-			$(this).attr('class', 'hidden');
+	// accordion: to make animation faster & to initialize with none selected 
+	$( "#tNav" ).accordion({
+		animate: {
+	        duration: 200
+	    },
+	    active: 1000
+	});
+	// tooltip: to enable tooltips display html
+	$(document).tooltip({
+		content: function () {
+			return $(this).prop('title');
+		}
+	});	
+	// to hide all questions initially
+	$(".q").hide();
+	// click event of question boxes
+	$(".qNavTd").click(function(){
+		if ($(this).attr('class') == 'qNavTd') {
+			var qNavTdId = $(this).attr('id');
+			var indx1 = qNavTdId.indexOf("_");
+			var indx2 = qNavTdId.indexOf("_", indx1+1);
+			var testId = qNavTdId.substring(indx1+1, indx2);
+			var questionId = qNavTdId.substring(indx2+1);
+			var qId = "#q_" + testId + "_" + questionId;
+			$(".q").hide();
+			$(qId).show();
+			$(".qNavTdSelected").attr('class', 'qNavTd');
+			$(this).attr('class', 'qNavTdSelected');
 		}
 	});
-	
-	
-	
-	$("div.tNav ul li").click(function(){	
-		var selTNb = $("div.tNav ul li.selected").attr('id');
-		selTNb = selTNb.substring(7);		
-		var curTNb = $(this).attr('id');
-		curTNb = curTNb.substring(7);
-		
-		if (selTNb != curTNb) {
-			var selTId = "tNavLi_" + selTNb;
-			var curTId = "tNavLi_" + curTNb;
-			$("#" + selTId).attr('class', 'notselected');
-			$("#" + curTId).attr('class', 'selected');
-			
-			
-			
-			$("div.qNav ul li").each(function(){
-				var qNavLi = $(this).attr('id');
-				var qTNb = qNavLi.substring(7, qNavLi.indexOf("_", 7));
-				if (qTNb == curTNb) {
-					var qNb = qNavLi.substring(qNavLi.indexOf("_", 7)+1);
-					if (qNb == "1") {
-						//$(this).removeClass('displayedNS');
-						//$(this).removeClass('hidden');
-						$(this).addClass('displayedS');
-						//$(this).attr('class', 'displayedS');					
-					} else {
-						//$(this).removeClass('displayedS');
-						//$(this).removeClass('hidden');
-						$(this).addClass('displayedNS');
-						//$(this).attr('class', 'displayedNS');
-					}
-				} else {
-					$(this).attr('class', 'hidden');
+	// click event of next button
+	$(".qThNext").click(function(){
+		var qThId = $(this).attr('id');
+		var indx1 = qThId.indexOf("_");
+		var indx2 = qThId.indexOf("_", indx1+1);
+		var testId = qThId.substring(indx1+1, indx2);
+		var questionId = qThId.substring(indx2+1);
+		var qId = "#q_" + testId + "_" + questionId;
+		var newQId = "#" + $(qId).next().attr('id');
+		if (newQId != "#undefined") {
+			if ($(newQId).attr('class') == "q") {
+				var newIndx1 = newQId.indexOf("_");
+				var newIndx2 = newQId.indexOf("_", newIndx1+1);
+				var newTestId = newQId.substring(newIndx1+1, newIndx2);
+				var newQuestionId = newQId.substring(newIndx2+1);
+				var qNavTdId = "#qNavTd_" + newTestId + "_" + newQuestionId;
+				$(".q").hide();
+				$(newQId).show();					
+				$(".qNavTdSelected").attr('class', 'qNavTd');
+				$(qNavTdId).attr('class', 'qNavTdSelected');
+				if (testId != newTestId) {
+					var active = $( "#tNav" ).accordion( "option", "active" );
+					var newActive = active + 1;
+					$( "#tNav" ).accordion( "option", "active", newActive );
 				}
-			});			
-		}		
+			}
+		}
 	});
-	
-	
-	
-	$(".displayedNS").click(function(){
-
-		alert('uuuur');
-		
-		
+	// click event of previous button
+	$(".qThPrev").click(function(){
+		var qThId = $(this).attr('id');
+		var indx1 = qThId.indexOf("_");
+		var indx2 = qThId.indexOf("_", indx1+1);
+		var testId = qThId.substring(indx1+1, indx2);
+		var questionId = qThId.substring(indx2+1);
+		var qId = "#q_" + testId + "_" + questionId;
+		var newQId = "#" + $(qId).prev().attr('id');
+		if (newQId != "#undefined") {
+			if ($(newQId).attr('class') == "q") {
+				var newIndx1 = newQId.indexOf("_");
+				var newIndx2 = newQId.indexOf("_", newIndx1+1);
+				var newTestId = newQId.substring(newIndx1+1, newIndx2);
+				var newQuestionId = newQId.substring(newIndx2+1);
+				var qNavTdId = "#qNavTd_" + newTestId + "_" + newQuestionId;
+				$(".q").hide();
+				$(newQId).show();					
+				$(".qNavTdSelected").attr('class', 'qNavTd');
+				$(qNavTdId).attr('class', 'qNavTdSelected');
+				if (testId != newTestId) {
+					var active = $( "#tNav" ).accordion( "option", "active" );
+					var newActive = active - 1;
+					$( "#tNav" ).accordion( "option", "active", newActive );
+				}
+			}
+		}
 	});
 });

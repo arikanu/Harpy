@@ -3,11 +3,14 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
-	<head>
-		<title>Home</title>		
+	<head>		
+		<title>Home</title>
 		<spring:url value="/css/style.css" var="styleCss" />
-		<link rel="stylesheet" href="${styleCss}">
-		
+			<link rel="stylesheet" href="${styleCss}">
+		<spring:url value="/jquery/js/jquery-1.10.2.min.js" var="jqueryJs" />
+			<script src="${jqueryJs}"></script>
+		<spring:url value="/jquery/js/jquery-ui-1.10.3.custom.min.js" var="jqueryUiJs" />
+			<script src="${jqueryUiJs}"></script>
 		
 		
 	<script>
@@ -40,14 +43,8 @@
 			}
 	}
 	</script>		
-		
-		
-		
-		
 	</head>
-	<header>
-		<jsp:include page="/WEB-INF/views/admin/header.jsp"></jsp:include>
-	</header>
+	
 	<body>
 		<h1>Admin's Home Page</h1>
 		<p>Welcome ${user.firstName} ${user.lastName}</p>
@@ -97,7 +94,4 @@
 		
 		
 	</body>
-	<footer>
-		<jsp:include page="/WEB-INF/views/admin/footer.jsp"></jsp:include>
-	</footer>
 </html>

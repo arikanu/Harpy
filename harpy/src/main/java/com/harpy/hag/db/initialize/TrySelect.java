@@ -1,7 +1,9 @@
 package com.harpy.hag.db.initialize;
 
 import java.util.ArrayList;
+
 import org.hibernate.Session;
+
 import com.harpy.hag.db.entities.exam.Exam;
 import com.harpy.hag.db.entities.user.Role;
 import com.harpy.hag.db.entities.user.User;
@@ -58,11 +60,16 @@ public class TrySelect {
 		}
 		
 		
-		session.getTransaction().commit(); 
-		HibernateUtil.getSessionFactory().close();
+		
 
 		
+		String q4 = "select min(examSubTypeId) from ExamSubType";
+		ArrayList<Integer> minSubTypeIds = new ArrayList<Integer>(session.createQuery(q4).list());
+		System.out.println("min subtypeid: " + minSubTypeIds.get(0));
 		
+		
+		session.getTransaction().commit(); 
+		HibernateUtil.getSessionFactory().close();
 
 	}
 

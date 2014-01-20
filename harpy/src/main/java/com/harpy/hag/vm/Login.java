@@ -1,10 +1,13 @@
-package com.harpy.hag.authentication;
+package com.harpy.hag.vm;
 
-public class Login {
+public class Login extends ViewModel {
 
 	private String j_username;
-	private String j_password;
-	
+	private String j_password;		
+		
+	public Login(String pageTitle) {
+		super(pageTitle);
+	}
 	
 	public String getJ_username() {
 		return j_username;
@@ -18,6 +21,5 @@ public class Login {
 	public void setJ_password(String j_password) {
 		this.j_password = j_password;
 	}
-	
-	
+		
 }

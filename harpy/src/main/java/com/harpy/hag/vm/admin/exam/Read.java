@@ -1,7 +1,5 @@
 package com.harpy.hag.vm.admin.exam;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,8 +17,9 @@ import com.harpy.hag.db.entities.exam.ExamSubType;
 import com.harpy.hag.db.entities.exam.Question;
 import com.harpy.hag.db.entities.exam.Test;
 import com.harpy.hag.db.utils.HibernateUtil;
+import com.harpy.hag.vm.ViewModel;
 
-public class Read {
+public class Read extends ViewModel {
 
 	private MultipartFile jsonFile;	
 	private boolean existsInDb;
@@ -31,16 +30,19 @@ public class Read {
 	
 	// Constructors
 	public Read() {
+		super("Admin/Exam/Upload");
 		this.jsonFile = null;
 		this.exam = null;
 		this.uploadedMessage = "";
 	}
 	public Read(String uploadedMessage) {
+		super("Admin/Exam/Upload");
 		this.jsonFile = null;
 		this.exam = null;
 		this.uploadedMessage = uploadedMessage;
 	}	
 	public Read(MultipartFile jsonFile, String uploadedMessage) throws JsonGenerationException, JsonMappingException, IOException {
+		super("Admin/Exam/Upload");
 		this.uploadedMessage = uploadedMessage;
 		ObjectMapper mapper = new ObjectMapper();
 		com.harpy.hag.upload.exam.Exam jExam;
@@ -60,6 +62,7 @@ public class Read {
 		}
 	}
 	public Read(String examJson, String uploadedMessage) throws JsonParseException, JsonMappingException, IOException {
+		super("Admin/Exam/Upload");
 		this.uploadedMessage = uploadedMessage;
 		this.examJson = examJson;
 		this.exam = Exam.examFromJson(examJson);

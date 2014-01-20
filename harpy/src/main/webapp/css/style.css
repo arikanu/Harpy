@@ -1,3 +1,8 @@
 @import url("menus/navbar.css");
 @import url("menus/boxes.css");
-@import url("exam/exam.css");
+@import url("jquery-ui/jquery-ui.css");
+@import url("common/button.css");
+
+html, body {
+	height: 99%;
+}

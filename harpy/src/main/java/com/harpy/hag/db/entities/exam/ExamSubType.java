@@ -1,6 +1,8 @@
 package com.harpy.hag.db.entities.exam;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
+
+import org.hibernate.Session;
+
+import com.harpy.hag.db.utils.HibernateUtil;
 
 @Entity
 public class ExamSubType {
@@ -34,6 +40,24 @@ public class ExamSubType {
 	private ExamMasterType examMasterType;
 
 	
+	
+	public static List<ExamSubType> populateSubTypes(int masterTypeId) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		String q = "from ExamSubType where examMasterTypeId = " + masterTypeId;
+		ArrayList<ExamSubType> examSubTypes = new ArrayList<ExamSubType>(session.createQuery(q).list());
+		return examSubTypes;
+	}
+	public static int getFirstSubTypeId(int masterTypeId) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		String q = "select min(examSubTypeId) from ExamSubType where examMasterTypeId = " + masterTypeId;
+		ArrayList<Integer> minSubTypeId = new ArrayList<Integer>(session.createQuery(q).list());
+		if (minSubTypeId.size() > 0) {
+			return minSubTypeId.get(0);
+		}
+		return 0;
+	}
 	
 	
 	// Getters & Setters

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	
+	<definition name="main" template="/WEB-INF/views/partials/main.jsp">
+			
+	</definition>
+
+	<definition name="home" extends="main">		
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp"/>
+	</definition>
+	
+	<definition name="admin" template="/WEB-INF/views/partials/main.jsp" role="ROLE_ADMN" preparer="com.harpy.hag.viewpreparer.CustomViewPreparer">
+		<put-attribute name="top" value="/WEB-INF/views/partials/admin/topmenu.jsp"/>
+		<put-attribute name="left" value="/WEB-INF/views/partials/admin/leftmenu.jsp"/>
+		<put-attribute name="bottom" value="/WEB-INF/views/partials/admin/footer.jsp"/>
+		<put-attribute name="right" value="/WEB-INF/views/partials/admin/rightmenu.jsp"/>
+	</definition>
+	
+	<definition name="admin/*" extends="admin" role="ROLE_ADMN">
+		<put-attribute name="content" value="/WEB-INF/views/admin/{1}.jsp"/>
+	</definition>
+	<definition name="admin/exam/*" extends="admin" role="ROLE_ADMN">
+		<put-attribute name="content" value="/WEB-INF/views/admin/exam/{1}.jsp"/>
+	</definition>
+	
+	
+	<definition name="student" template="/WEB-INF/views/partials/main.jsp" role="ROLE_STDNT">
+		<put-attribute name="top" value="/WEB-INF/views/partials/student/topmenu.jsp"/>
+		<put-attribute name="left" value="/WEB-INF/views/partials/student/leftmenu.jsp"/>
+		<put-attribute name="bottom" value="/WEB-INF/views/partials/student/footer.jsp"/>
+		<put-attribute name="right" value="/WEB-INF/views/partials/student/rightmenu.jsp"/>
+	</definition>
+	
+	<definition name="student/*" extends="student" role="ROLE_STDNT">
+		<put-attribute name="content" value="/WEB-INF/views/student/{1}.jsp"/>
+	</definition>
+	<definition name="student/exam/*" extends="student" role="ROLE_STDNT">
+		<put-attribute name="content" value="/WEB-INF/views/student/exam/{1}.jsp"/>
+	</definition>
+	
+</tiles-definitions>
