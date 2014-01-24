@@ -1,12 +1,8 @@
 package com.harpy.hag.db.initialize;
 
-import java.util.ArrayList;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import com.harpy.hag.db.entities.exam.Choice;
-import com.harpy.hag.db.utils.HibernateUtil;
+import com.harpy.hag.utils.HibernateUtil;
 
 public class ClearData {
 
@@ -15,6 +11,12 @@ public class ClearData {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 
+		Query qQuestionSolution = session.createQuery("delete QuestionSolution");
+		qQuestionSolution.executeUpdate();
+		
+		Query qExamSolution = session.createQuery("delete ExamSolution");
+		qExamSolution.executeUpdate();
+		
 		Query qChoice = session.createQuery("delete Choice");
 		qChoice.executeUpdate();
 		
@@ -34,9 +36,10 @@ public class ClearData {
 		qExamSubType.executeUpdate();
 		
 		Query qExamMasterType = session.createQuery("delete ExamMasterType");
-		qExamMasterType.executeUpdate();
+		qExamMasterType.executeUpdate();		
 				
 		session.getTransaction().commit();
+		HibernateUtil.getSessionFactory().close();
 
 	}
 

@@ -3,10 +3,14 @@ package com.harpy.hag.db.initialize;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+
+import com.harpy.hag.db.entities.exam.Choice;
 import com.harpy.hag.db.entities.exam.Exam;
 import com.harpy.hag.db.entities.exam.ExamMasterType;
 import com.harpy.hag.db.entities.exam.ExamSubType;
@@ -14,6 +18,9 @@ import com.harpy.hag.db.entities.exam.Question;
 import com.harpy.hag.db.entities.exam.Test;
 import com.harpy.hag.db.entities.user.Role;
 import com.harpy.hag.db.entities.user.User;
+import com.harpy.hag.db.entities.user_exam.ExamSolution;
+import com.harpy.hag.db.entities.user_exam.QuestionSolution;
+import com.harpy.hag.utils.HibernateUtil;
 
 
 public class InitializeDb {
@@ -29,6 +36,8 @@ public class InitializeDb {
 		config.addAnnotatedClass(Exam.class);
 		config.addAnnotatedClass(Test.class);
 		config.addAnnotatedClass(Question.class);
+		config.addAnnotatedClass(ExamSolution.class);
+		config.addAnnotatedClass(QuestionSolution.class);
 		config.configure("hibernate.cfg.xml");
 		new SchemaExport(config).create(true, true);			
 		
@@ -134,9 +143,93 @@ public class InitializeDb {
 		gk.setNbOfQuestions(60);
 		gk.setExam(kpss2013oo);
 		session.save(gk);
+		
+		// QUESTION
+		Question q1 = new Question();
+		q1.setNumber(1);
+		q1.setQuestionHtml("soru1");
+		q1.setCorrectAnswer("A");
+		q1.setTest(gy);
+		session.save(q1);
+		
+		Question q2 = new Question();
+		q2.setNumber(2);
+		q2.setQuestionHtml("soru2");
+		q2.setCorrectAnswer("A");
+		q2.setTest(gy);
+		session.save(q2);
+		
+		Question q3 = new Question();
+		q3.setNumber(1);
+		q3.setQuestionHtml("soru1");
+		q3.setCorrectAnswer("A");
+		q3.setTest(gk);
+		session.save(q3);
+		
+		// CHOICE
+		Choice c1 = new Choice();
+		c1.setChoiceCode("A");
+		c1.setChoiceHtml("A sikki");
+		c1.setChoiceLineIndex(1);
+		c1.setCorrectAnswer(true);
+		c1.setQuestion(q1);
+		session.save(c1);
+		
+		Choice c2 = new Choice();
+		c2.setChoiceCode("B");
+		c2.setChoiceHtml("B sikki");
+		c2.setChoiceLineIndex(1);
+		c2.setCorrectAnswer(true);
+		c2.setQuestion(q1);
+		session.save(c2);
+		
+		Choice c3 = new Choice();
+		c3.setChoiceCode("A");
+		c3.setChoiceHtml("A sikki");
+		c3.setChoiceLineIndex(1);
+		c3.setCorrectAnswer(true);
+		c3.setQuestion(q2);
+		session.save(c3);
+		
+		// EXAMSOLUTION
+		ExamSolution examSolution = new ExamSolution();
+		examSolution.setUser(uur);
+		examSolution.setExam(kpss2013oo);
+		examSolution.setStartDate(new Date());
+		examSolution.setEndDate(new Date());
+		session.save(examSolution);
+		
+		ExamSolution examSolution2 = new ExamSolution();
+		examSolution2.setUser(uur);
+		examSolution2.setExam(kpss2013oo);
+		examSolution2.setStartDate(new Date());
+		examSolution2.setEndDate(new Date());
+		session.save(examSolution2);
+		
+		ExamSolution examSolution3 = new ExamSolution();
+		examSolution3.setUser(baco);
+		examSolution3.setExam(kpss2013oo);
+		examSolution3.setStartDate(new Date());
+		examSolution3.setEndDate(new Date());
+		session.save(examSolution3);
+		
+		// QUESTIONSOLUTION
+		QuestionSolution qS1 = new QuestionSolution();
+		qS1.setExamSolution(examSolution);
+		qS1.setQuestion(q1);
+		qS1.setChoiceIndex(0);
+		session.save(qS1);
+		
+		QuestionSolution qS2 = new QuestionSolution();
+		qS2.setExamSolution(examSolution);
+		qS2.setQuestion(q2);
+		qS2.setChoiceIndex(-1);
+		session.save(qS2);
+		
 									
 		//*/
 		session.getTransaction().commit();
+		HibernateUtil.getSessionFactory().close();
 
 	}
 

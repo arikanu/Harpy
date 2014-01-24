@@ -1,12 +1,13 @@
 package com.harpy.hag.vm.admin.exam;
 
 import java.util.List;
+
 import com.harpy.hag.db.entities.exam.Exam;
 import com.harpy.hag.db.entities.exam.ExamMasterType;
 import com.harpy.hag.db.entities.exam.ExamSubType;
-import com.harpy.hag.vm.ViewModel;
+import com.harpy.hag.vm.VM;
 
-public class Browse extends ViewModel {
+public class Browse extends VM {
 	
 	private List<ExamMasterType> examMasterTypes = ExamMasterType.populateMasterTypes();
 	private int examMasterTypeId;
@@ -15,7 +16,7 @@ public class Browse extends ViewModel {
 	private List<Exam> exams;
 	
 	public Browse() {
-		super("Admin/Exam/Browse");
+		this.setPageTitle("Browse Exam");
 		this.examMasterTypeId = ExamMasterType.getFirstMasterTypeId();
 		this.examSubTypes = ExamSubType.populateSubTypes(this.examMasterTypeId);
 		this.examSubTypeId = ExamSubType.getFirstSubTypeId(this.examMasterTypeId);
@@ -23,7 +24,7 @@ public class Browse extends ViewModel {
 	}
 	
 	public Browse(int examMasterTypeId, int examSubTypeId) {
-		super("Admin/Exam/Browse");
+		this.setPageTitle("Browse Exam");
 		this.examMasterTypeId = examMasterTypeId;
 		this.examSubTypes = ExamSubType.populateSubTypes(this.examMasterTypeId);
 		this.examSubTypeId = examSubTypeId;

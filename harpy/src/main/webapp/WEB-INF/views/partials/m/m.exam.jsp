@@ -10,11 +10,11 @@
 	<c:forEach var="test" items="${m.exam.tests}">
 		<h3>${test.name}</h3>
 		<div>
-			<table id="qNav_${test.testId}" class="qNav">
+			<table id="qNav_${test.number}" class="qNav">
 				<tbody>
 					<tr>
 						<c:forEach var="question" items="${test.questions}">
-							<td class="qNavTd" id="qNavTd_${test.testId}_${question.questionId}">								
+							<td class="qNavTd" id="qNavTd_${test.number}_${question.number}">								
 								<a title="${question.questionHtml}">${question.number}</a>								
 							</td>
 						</c:forEach>
@@ -27,12 +27,12 @@
 
 <c:forEach var="test" items="${m.exam.tests}">
 	<c:forEach var="question" items="${test.questions}">
-		<div id="q_${test.testId}_${question.questionId}" class="q">
+		<div id="q_${test.number}_${question.number}" class="q">
 			<table class="qTitle">
 				<tr>
-					<th id="qThPrev_${test.testId}_${question.questionId}" class="qThPrev"></th>
+					<th id="qThPrev_${test.number}_${question.number}" class="qThPrev"></th>
 					<th>${test.name} - ${question.number}</th>
-					<th id="qThNext_${test.testId}_${question.questionId}" class="qThNext"></th>
+					<th id="qThNext_${test.number}_${question.number}" class="qThNext"></th>
 				</tr>
 			</table>
 			<table class="qBody">

@@ -5,9 +5,10 @@
 <html>
 	
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">  
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title>
-			${m.pageTitle}			
+			${m.pageTitle}
 		</title>
 		<spring:url value="/css/style.css" var="styleCss" />
 			<link rel="stylesheet" href="${styleCss}">

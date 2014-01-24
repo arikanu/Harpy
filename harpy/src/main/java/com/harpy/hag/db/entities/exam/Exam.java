@@ -25,7 +25,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Session;
 
-import com.harpy.hag.db.utils.HibernateUtil;
+import com.harpy.hag.utils.HibernateUtil;
+import com.harpy.hag.utils.QueryUtil;
 
 @Entity
 public class Exam {
@@ -61,10 +62,10 @@ public class Exam {
 	@Transient
 	private ArrayList<String> choiceCodes = new ArrayList<String>() {{ add("A"); add("B"); add("C"); add("D"); add("E"); }};
 	
+	
 	public Exam(){}
 	public Exam(com.harpy.hag.upload.exam.Exam jExam) {
 		if (jExam != null) {
-			int qItr = -1; int tItr = -1;
 			this.key = jExam.getKey();
 			this.duration = jExam.getDuration();
 			try {
@@ -78,8 +79,6 @@ public class Exam {
 			int nbOfQuestions = 0;
 			for (int t = 0; t < jTests.size(); t++) {
 				Test test = new Test();
-				tItr = tItr + 1;
-				test.setTestId(tItr);
 				com.harpy.hag.upload.exam.Test jTest = jTests.get(t);
 				test.setName(jTest.getName());			
 				test.setNumber(jTest.getNumber());
@@ -88,10 +87,8 @@ public class Exam {
 				nbOfQuestions = nbOfQuestions + jQuestions.size();
 				test.setNbOfQuestions(jQuestions.size());
 				for (int q = 0; q < jQuestions.size(); q++) {
-					qItr = qItr + 1;
 					Question question = new Question();
 					com.harpy.hag.upload.exam.Question jQuestion = jQuestions.get(q);
-					question.setQuestionId(qItr);					
 					question.setCorrectAnswer(jQuestion.getCorrectAnswer());
 					question.setNumber(jQuestion.getNumber());
 					question.setQuestionHtml(jQuestion.getQuestionHtml());
@@ -127,23 +124,18 @@ public class Exam {
 	public static Exam examById(int examId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		String q = "from Exam where examId = " + examId;
-		ArrayList<Exam> exams = new ArrayList<Exam>(session.createQuery(q).list());
-		if (exams.size() > 0) {
-			return exams.get(0);
-		} else {
-			return null;
-		}
+		String query = "from Exam where examId = " + examId;
+		return QueryUtil.selectFirst(Exam.class, query);
 	}
 	
 	public static List<Exam> populateExams(int subTypeId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		String q = "from Exam where examSubTypeId = " + subTypeId;
-		ArrayList<Exam> exams = new ArrayList<Exam>(session.createQuery(q).list());
-		return exams;
+		String query = "from Exam where examSubTypeId = " + subTypeId;
+		return QueryUtil.select(Exam.class, query);
 	}
 	
+	/*
 	public static Exam examFromJson(String examJson) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -169,7 +161,7 @@ public class Exam {
 			return null;
 		}
 	}
-	
+	*/
 	
 	
 	// Getters & Setters
@@ -221,9 +213,12 @@ public class Exam {
 	public void setExamSubType(ExamSubType examSubType) {
 		this.examSubType = examSubType;
 	}
-	public String getStrDate() {
+	
+
+	public String generateStrDate() {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		return df.format(this.date);
 	}
+
 	
 }

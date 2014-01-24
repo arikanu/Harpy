@@ -1,14 +1,14 @@
 package com.harpy.hag.vm.admin.exam;
 
 import com.harpy.hag.db.entities.exam.Exam;
-import com.harpy.hag.vm.ViewModel;
+import com.harpy.hag.vm.VM;
 
-public class View extends ViewModel {
+public class View extends VM {
 
 	private Exam exam;
 	
 	public View(int examId) {
-		super("Admin/Exam/View/" + examId);
+		this.setPageTitle("Admin/Exam/View/" + examId);
 		this.exam = Exam.examById(examId);
 	}
 

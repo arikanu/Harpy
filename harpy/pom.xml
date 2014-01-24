@@ -187,7 +187,13 @@
 			<artifactId>tiles-core</artifactId>
 			<version>2.2.1</version>
 		</dependency>
-
+		
+		<!-- for Lists.transform -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>16.0</version>
+		</dependency>
 		       
 	</dependencies>
     <build>

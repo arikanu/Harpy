@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <p>selected master type id = ${m.examMasterTypeId}</p>
-<form:form method="POST" commandName="m" action="browsePost">
+<c:url value="/admin/exam/browsed" var="browsed"/>
+<form:form method="POST" commandName="m" action="${browsed}">
 	<p>Master Types</p>
 	<c:forEach var="masterType" items="${m.examMasterTypes}">
 		<form:radiobutton path="examMasterTypeId" value="${masterType.examMasterTypeId}" onchange="this.form.submit()"/>
@@ -11,7 +12,7 @@
 	
 	<p>Sub Types</p>
 	<c:forEach var="subType" items="${m.examSubTypes}">
-		<form:radiobutton path="examSubTypeId" value="${subType.examSubTypeId}" onchange="this.form.submit()"/>				
+		<form:radiobutton path="examSubTypeId" value="${subType.examSubTypeId}" onchange="this.form.submit()"/>
 		${subType.code }: ${subType.name } <br />
 	</c:forEach>
 				

@@ -1,28 +1,15 @@
 package com.harpy.hag.c.admin;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.harpy.hag.db.entities.exam.Exam;
-import com.harpy.hag.vm.ViewModel;
+import com.harpy.hag.vm.VM;
 import com.harpy.hag.vm.admin.exam.Browse;
-import com.harpy.hag.vm.admin.exam.Read;
+import com.harpy.hag.vm.admin.exam.Upload;
 import com.harpy.hag.vm.admin.exam.View;
 
 
@@ -35,8 +22,8 @@ public class AdminExamC {
 		System.out.println("@CTRLR: adminExamHomeGET");
 		
 		ModelAndView mav = new ModelAndView("admin/exam/home");
-		mav.addObject("m", new ViewModel("Admin/Exam/Home"));
-		return mav;
+		mav.addObject("m", new VM("Admin/Exam/Home"));
+		return mav; 
 	}
 	
 	
@@ -49,9 +36,9 @@ public class AdminExamC {
 		mav.addObject("m", new Browse());
 		return mav;
 	}
-	@RequestMapping(value = "/browsePost", method = RequestMethod.POST)
+	@RequestMapping(value = "/browsed", method = RequestMethod.POST)
 	public ModelAndView search(@ModelAttribute Browse search) {
-		System.out.println("@CTRLR: adminExamBrowsePOST");		
+		System.out.println("@CTRLR: adminExamBrowsedPOST");		
 		
 		ModelAndView mav = new ModelAndView("admin/exam/browse");
 		mav.addObject("m", new Browse(search.getExamMasterTypeId(), search.getExamSubTypeId()));
@@ -68,41 +55,33 @@ public class AdminExamC {
 		return mav;
 	}
 	
+	
 	// READ & UPLOAD EXAM
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
 	public ModelAndView upload() {
 		System.out.println("@CTRLR: adminExamUploadGET");
 		
 		ModelAndView mav = new ModelAndView("admin/exam/upload");
-		mav.addObject("m", new Read());
+		mav.addObject("m", new Upload());
 		return mav;
 	}
 	
 	@RequestMapping(value = "/uploaded", method = RequestMethod.POST)
-	public ModelAndView uploaded(@ModelAttribute Read read, @RequestParam(required=false , value = "upload") String uploadFlag) throws IOException {					
+	public ModelAndView uploaded(@ModelAttribute("m") Upload m) {
 		System.out.println("@CTRLR: adminExamUploadedPOST");
+			
+		ModelAndView mav = new ModelAndView("admin/exam/upload");
+		mav.addObject("m", new Upload(m.getJsonFile()));
+		return mav;
+	}
+	
+	@RequestMapping(value = "/uploadedDb", method = RequestMethod.POST)
+	public ModelAndView uploadedDb(@ModelAttribute("m") Upload m) {
+		System.out.println("@CTRLR: adminExamUploadedDbPOST");
 		
 		ModelAndView mav = new ModelAndView("admin/exam/upload");
-		if (uploadFlag == null) {			
-			mav.addObject("m", new Read(read.getJsonFile(), ""));
-			
-			Read newRead = new Read(read.getJsonFile(), "");
-			Exam newExam = newRead.getExam();
-			String newExamJson = Exam.jsonFromExam(newExam);
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(new File("c:\\users\\uarikan\\desktop\\abc.json"), newExam);
-			
-			return mav;
-		} else /*if (uploadFlag != null)*/ {
-			Exam exam = Exam.examFromJson(read.getExamJson());
-			boolean uploaded = Read.uploadToDb(exam, read.getExamSubTypeCode());
-			if (uploaded) {
-				mav.addObject("m", new Read("Exam is successfully uploaded to DB."));
-			} else {
-				mav.addObject("m", new Read(read.getExamJson(), "Exam could not be uploaded to DB!"));
-			}
-			return mav;
-		}				
+		mav.addObject("m", new Upload(m.getHiddenJson()));		
+		return mav;
 	}
 	
 }

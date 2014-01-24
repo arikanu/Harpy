@@ -1,9 +1,9 @@
 package com.harpy.hag.vm.student.exam;
 
 import com.harpy.hag.db.entities.exam.Exam;
-import com.harpy.hag.vm.ViewModel;
+import com.harpy.hag.vm.VM;
 
-public class History extends ViewModel {
+public class History extends VM {
 
 	private Exam exam;
 	

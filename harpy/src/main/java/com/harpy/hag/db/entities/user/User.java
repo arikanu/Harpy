@@ -2,12 +2,19 @@ package com.harpy.hag.db.entities.user;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.Session;
+
+import com.harpy.hag.db.entities.exam.Exam;
+import com.harpy.hag.utils.HibernateUtil;
+import com.harpy.hag.utils.QueryUtil;
 
 @Entity
 public class User {
@@ -31,11 +38,15 @@ public class User {
 	private List<Role> roles = new ArrayList<Role>();
 	
 	
-	/*public void fillRoles() {
+	public User() { }
+	
+	public static User userByEmailAddress(String emailAddress) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		this.roles = null;
-		Query query = session.createQuery("");
-	}*/
+		String query = "from User where emailAddress = '" + emailAddress + "'";
+		return QueryUtil.selectFirst(User.class, query);
+	}
+	
 
 	public List<Role> getRoles() {
 		return roles;

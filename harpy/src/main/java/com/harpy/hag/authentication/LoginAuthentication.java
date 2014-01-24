@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+
 import com.harpy.hag.db.entities.user.Role;
 import com.harpy.hag.db.entities.user.User;
-import com.harpy.hag.db.utils.HibernateUtil;
+import com.harpy.hag.utils.HibernateUtil;
 
 public class LoginAuthentication {
 

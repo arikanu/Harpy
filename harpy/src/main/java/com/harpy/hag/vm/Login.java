@@ -1,12 +1,12 @@
 package com.harpy.hag.vm;
 
-public class Login extends ViewModel {
+public class Login extends VM{
 
 	private String j_username;
 	private String j_password;		
-		
-	public Login(String pageTitle) {
-		super(pageTitle);
+	
+	public Login() {
+		this.setPageTitle("Login");
 	}
 	
 	public String getJ_username() {

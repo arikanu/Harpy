@@ -1,0 +1,35 @@
+.frmExamSolve input[type="radio"] {
+	display:none;
+}
+.frmExamSolve label {
+	cursor: pointer;
+    display:inline-block;
+    padding:4px 11px;
+    font-family:Arial;
+    color: gray;
+}
+.frmExamSolve label:hover {
+	color: black;
+}
+.frmExamSolve input[type="radio"]:hover {
+	color: black;
+}
+.frmExamSolve input[type="radio"]:checked + label {
+	background: url("../img/exam/solve/Check.png") left center no-repeat;
+    color: black;
+}
+
+.examDuration {
+	height:20px;
+/* 	background-color: white; */
+}
+.ui-progressbar-value {
+	background: rgb(98,125,77); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(98,125,77,1) 0%, rgba(31,59,8,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(98,125,77,1)), color-stop(100%,rgba(31,59,8,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#627d4d', endColorstr='#1f3b08',GradientType=0 ); /* IE6-9 */
+}

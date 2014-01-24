@@ -9,10 +9,12 @@
 
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/examtest</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/examtest?useUnicode=true;characterEncoding=UTF-8;</property>
         <property name="connection.username">pyre</property>
         <property name="connection.password">rebirth</property>
         <property name="hibernate.default_schema">examtest</property>
+        
+        
 
         <!-- JDBC connection pool (use the built-in) -->
         <property name="connection.pool_size">2</property>
@@ -48,6 +50,8 @@
 		<mapping class="com.harpy.hag.db.entities.exam.Test" />
 		<mapping class="com.harpy.hag.db.entities.exam.Question" />
 		<mapping class="com.harpy.hag.db.entities.exam.Choice" />
+		<mapping class="com.harpy.hag.db.entities.user_exam.ExamSolution" />
+		<mapping class="com.harpy.hag.db.entities.user_exam.QuestionSolution" />
 		
 		
     </session-factory>

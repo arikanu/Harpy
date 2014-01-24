@@ -16,7 +16,7 @@ import javax.persistence.TableGenerator;
 
 import org.hibernate.Session;
 
-import com.harpy.hag.db.utils.HibernateUtil;
+import com.harpy.hag.utils.HibernateUtil;
 
 @Entity
 public class ExamSubType {
